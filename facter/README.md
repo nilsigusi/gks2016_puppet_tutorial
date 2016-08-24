@@ -86,5 +86,28 @@ you could create facts inside modules
 On the client:
 
 ```
-facter -p
+puppet agent -t # by the first run your fact would be copied to the client
+                # this is visible in log output.
+facter -p       # get the key=>value of all facts.. search for `hardware_platform`
+```
+
+### Using other facts
+
+we have those facts in the system:
+
+```bash
+operatingsystem => CentOS
+operatingsystemmajrelease => 7
+operatingsystemrelease => 7.2.1511
+```
+
+So lets bring them together
+
+```ruby
+Facter.add('complex') do # same as filename
+  setcode do
+    complex = Facter.value(:operatingsystem) + " " + Facter.value(:operatingsystemmajrelease) + " " + Facter.value(:operatingsystemrelease)
+    complex
+  end
+end
 ```
