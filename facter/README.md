@@ -1,14 +1,23 @@
 # Facter
 
----
-
-
 https://docs.puppet.com/facter/
 
 `FACTER` is Puppet’s cross-platform system profiling library. It discovers and reports per-node facts, which are available in your Puppet manifests as variables.
 
 `FACTS` - `:key => :value` pairs, describing something
 
+facter comes along puppet client. There are a number of facts (~90) coming with the package.
+
+```bash
+ipaddress => 141.5.6.111
+ipaddress_ens192 => 141.5.6.111
+ipaddress_lo => 127.0.0.1
+swapfree => 637.84 MB
+swapfree_mb => 637.84
+swapsize => 1024.00 MB
+...
+
+```
 
 ---
 
@@ -25,53 +34,64 @@ https://docs.puppet.com/facter/
 
 ---
 
-## System facts.
-
-facter comes along puppet client. There are a number of facts (~90) comming with the package
+## Core facts.
 
 ```bash
-#bash> facter
-ipaddress => 141.5.6.111
-ipaddress_ens192 => 141.5.6.111
+### show all core facts
+#> facter
+ipaddress => 131.169.217.69
+ipaddress_ens192 => 131.169.217.69
 ipaddress_lo => 127.0.0.1
-...
 swapfree => 637.84 MB
 swapfree_mb => 637.84
 swapsize => 1024.00 MB
-swapsize_mb => 1024.00
 ...
 
 ```
 
-using it (on the client)
+---
 
-```bash
-# show all facter facts
-facter
+## Using facts
 
-# show all facter facts, and those defined for use in puppet (run as root)
-facter -p
-```
+in puppet facts are just __top scope variables__
 
-## Accessing facts in puppet manifests
-Facts are in __global__ scope, so
+### using in manifests
 
-```
-notify{"My IP is: $::ipaddress":
+```ruby
+notify{"My Ip is $::ipaddress":
 }
+
+# output:
+# Notify[My IP is: 131.169.217.69]/message: defined 'message' as 'My IP is: 131.169.217.69'
 ```
+
+### using in templates
+
+```ruby
+## ssh configuration
+
+# ListenAdress <%= @ipaddress %>
+
+# output
+# ListenAdress 131.169.217.69
+```
+
+---
 
 ## Custom facts
 
-### On the node - a hard way.
+Sure you could create your custom facts.
 
-Create a custom fact on a client
+```bash
+mkdir /var/lib/puppet/facts
+vi /var/lib/puppet/facts/hardware_platform.rb
 
-`/usr/share/ruby/vendor_ruby/facter/hardware_platform.rb`
+facter -p # display "puppet" facts
+```
+
+and create a fact that retrieves hardware platform.
 
 ```ruby
-# hardware_platform.rb
-
 Facter.add('hardware_platform') do # same as filename
   setcode do
     Facter::Core::Execution.exec('/bin/uname --hardware-platform')
@@ -79,25 +99,29 @@ Facter.add('hardware_platform') do # same as filename
 end
 ```
 
-### Place facts in to modules:
+---
 
-* enable pluginsync. This requires `pluginsync=true` in the [main] section of `puppet.conf` on the server.
+## Custom facts in modules
 
-you could create facts inside modules
+location inside module
 
 ```
-#~/lib/ruby
+# lib/
 └── facter
     └── hardware_platform.rb
 ```
 
-On the client:
+the distribution is done via `pluginsync`. Facts(or any other plugin) would be always copied to the client system.
+Even you are not using the module, which contains the custom fact. So custom facts should always produce a proper output.
 
+on the clinet
+
+```bash
+puppet agent -t
+facter -p
 ```
-puppet agent -t # by the first run your fact would be copied to the client
-                # this is visible in log output.
-facter -p       # get the key=>value of all facts.. search for `hardware_platform`
-```
+
+---
 
 ### Using other facts
 
