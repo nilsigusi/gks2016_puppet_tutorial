@@ -1,66 +1,81 @@
 # Hiera
 
 Hiera separates data from modules... It is an external place to specify data.
-Hiera should handle __only plain data__. So modules should then only provide default values.
 
-## How hiera works
+```ruby
+# nginx class
 
-Simple hiera config file is this one:
+class nginx{
+  $port = hiera("nginx::port", '80')
+}
+```
+
+```yaml
+# hiera data
+
+nginx::port: 81
+```
+
+---
+
+## Config Puppet Server
 
 ```
+# puppet config
+    hiera_config = $confdir/hiera.yaml
+```
+
+```
+# hiera.yaml
 ---
 :hierarchy:
  - fqdn/%{fqdn}
+ - role/%{role}/%{role_group}
+ - role/%{role}/common
  - common
 
 :backends:
  - yaml
 
-```
-
-top lines have __higher__ priority.
-If nothing found, a `common.yaml` file would be taken.
-
-in the directory we have:
-
-```
-#./hira-data
-└── fqnd
-    └── mynode1.host.de
-    └── mynode2.host.de
-└── common.yaml
-
-
-
+:yaml:
+ :datadir: /etc/puppet/environments/%{environment}/hieradata
 
 ```
 
-`fqdn` is a value of the fact from the node.
+---
 
+## Getting data
 
-`FQDN` has a _
+Before building the catalog, puppet would do:
 
-## Access hiera in puppet manifests
+ 1. send facts to Puppet Master
+ 2. using this facts and build hiera data
+ 3. apply hiera data to manifest (set variable)
+ 4. build catalog
 
-Hiera data files are `YAML` formated
+---
+
+## Exercise
+
+Let's use our `role` fact, and `sysadmin` module.
 
 ```ruby
-class myclass::{
-  # required parameter
-  $car1 = hiera('myclass::car1')
+class sysadmin{
+  $permissions = hiera('sysadmin::permissions', 'no')
 
-  # or with default value
-  $car2 = hiera('myclass::car2', 'audi')
-
-  notify{"cars: $car1, $car2":
-  }
+  notify{"My Permissions are: $permissions":}
+  notify{"My role is: $::role":}
 }
 ```
 
-and the hiera file is:
+```bash
+# mkdir hieradata
+# hieradata/common.yaml
+sysadmin::permissions: 'read'
+
+# hieradata/admin/common.yaml
+sysadmin::permissions: 'write'
 
 ```
-myclass::car1: bmw
-myclass::car2: opel
 
-```
+---

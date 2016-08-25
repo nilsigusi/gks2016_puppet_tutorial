@@ -38,7 +38,7 @@ swapsize => 1024.00 MB
 
 ## Using facts
 
-for puppet facts are just __top scope__ variables
+for puppet - facts are just __top scope__ variables
 
 ### using in manifests
 
@@ -89,20 +89,31 @@ end
 
 ## Custom facts in modules
 
-location inside module
+create an empty module: `sysadmin`:
 
+```ruby
+# init.pp
+class sysadmin{}
 ```
-lib/
- └── facter/
-    └── hardware_platform.rb
+
+location inside module
+```
+lib/facter/role.rb
 ```
 
 the distribution is done via `pluginsync`. Facts(or any other plugin) would be always copied to the client system.
 Even you are not using the module, which contains the custom fact. So custom facts should always produce a proper output.
 
-on the clinet
+```ruby
+Facter.add('role') do
+  setcode do
+    Facter::Core::Execution.exec('cat /etc/role')
+  end
+end
+```
 
 ```bash
+echo "admin" > /etc/role
 puppet agent -t
 facter -p
 ```
@@ -133,4 +144,16 @@ end
 ```bash
 puppet agent -t
 facter -p
+```
+
+---
+
+# Execrisce
+
+```ruby
+class sysadmin{
+
+  notify{"Complex Fact: $::complex":}
+  notify{"My role is: $::role":}
+}
 ```
