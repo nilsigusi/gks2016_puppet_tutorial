@@ -1,3 +1,4 @@
+face
 # GKS 2016 - Puppet
 
 ## Facter

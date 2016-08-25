@@ -1,10 +1,16 @@
 # Facter
 
+---
+
+
 https://docs.puppet.com/facter/
 
 `FACTER` is Puppet’s cross-platform system profiling library. It discovers and reports per-node facts, which are available in your Puppet manifests as variables.
 
 `FACTS` - `:key => :value` pairs, describing something
+
+
+---
 
 ![Puppet Facter](./puppet_facter.jpg)
 
@@ -16,6 +22,8 @@ https://docs.puppet.com/facter/
  6. Execute catalog
  7. Init reporting system
  8. Report
+
+---
 
 ## System facts.
 
