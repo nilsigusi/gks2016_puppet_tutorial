@@ -9,6 +9,8 @@ https://docs.puppet.com/facter/
 facter comes along puppet client. There are a number of facts (~90) coming with the package.
 
 ```bash
+> facter
+
 ipaddress => 141.5.6.111
 ipaddress_ens192 => 141.5.6.111
 ipaddress_lo => 127.0.0.1
@@ -18,7 +20,6 @@ swapsize => 1024.00 MB
 ...
 
 ```
-
 ---
 
 ![Puppet Facter](./puppet_facter.jpg)
@@ -31,29 +32,11 @@ swapsize => 1024.00 MB
  6. Execute catalog
  7. Init reporting system
  8. Report
-
----
-
-## Core facts.
-
-```bash
-### show all core facts
-#> facter
-ipaddress => 131.169.217.69
-ipaddress_ens192 => 131.169.217.69
-ipaddress_lo => 127.0.0.1
-swapfree => 637.84 MB
-swapfree_mb => 637.84
-swapsize => 1024.00 MB
-...
-
-```
-
 ---
 
 ## Using facts
 
-in puppet facts are just __top scope variables__
+for puppet facts are just __top scope__ variables
 
 ### using in manifests
 
@@ -83,13 +66,14 @@ notify{"My Ip is $::ipaddress":
 Sure you could create your custom facts.
 
 ```bash
+# on the client
 mkdir /var/lib/puppet/facts
 vi /var/lib/puppet/facts/hardware_platform.rb
 
 facter -p # display "puppet" facts
 ```
 
-and create a fact that retrieves hardware platform.
+fact that retrieves hardware platform.
 
 ```ruby
 Facter.add('hardware_platform') do # same as filename
@@ -98,7 +82,6 @@ Facter.add('hardware_platform') do # same as filename
   end
 end
 ```
-
 ---
 
 ## Custom facts in modules
@@ -106,8 +89,8 @@ end
 location inside module
 
 ```
-# lib/
-└── facter
+lib/
+ └── facter/
     └── hardware_platform.rb
 ```
 
@@ -142,4 +125,9 @@ Facter.add('complex') do # same as filename
     complex
   end
 end
+```
+
+```bash
+puppet agent -t
+facter -p
 ```
