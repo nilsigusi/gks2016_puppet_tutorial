@@ -30,8 +30,7 @@ nginx::port: 81
 ---
 :hierarchy:
  - fqdn/%{fqdn}
- - role/%{role}/%{role_group}
- - role/%{role}/common
+ - role/%{role}
  - common
 
 :backends:
@@ -73,9 +72,11 @@ class sysadmin{
 # hieradata/common.yaml
 sysadmin::permissions: 'read'
 
-# hieradata/admin/common.yaml
+# hieradata/role/admin.yaml
 sysadmin::permissions: 'write'
 
 ```
+
+change content of `/etc/role` and see what happening by `puppet agent -t`
 
 ---
