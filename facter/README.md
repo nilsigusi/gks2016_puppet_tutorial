@@ -101,8 +101,7 @@ location inside module
 lib/facter/role.rb
 ```
 
-the distribution is done via `pluginsync`. Facts(or any other plugin) would be always copied to the client system.
-Even you are not using the module, which contains the custom fact. So custom facts should always produce a proper output.
+the distribution is done via `pluginsync`. Facts would be always copied to the client system. Even you are not using the module!
 
 ```ruby
 Facter.add('role') do
