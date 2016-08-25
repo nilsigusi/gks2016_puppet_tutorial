@@ -1,5 +1,5 @@
 class myhttp(
-  $port = 8081,
+  $port = hiera('myhttp::port', 8080),
   $special_name = hiera('myhttp::special_name', 'noname'),
   $drinks = hiera('myhttp::drinks'),
 )
