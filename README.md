@@ -34,6 +34,7 @@ Listen 1234
 ```
 `1234` - is a port number to be changed, this should come from `hiera`. Note - httpd needs to be restarted, if configuration changes!
 
+---
 
  * create the `index.html` in `DocumentRoot` of the server as a landing page.
  After rendering the HTML source code should be like this one
@@ -63,15 +64,20 @@ In the morning I am drinking:
 
 ```
 
-Where:
+---
 
 * `ComupterHero` - coming from `hiera` as a parameter.
 * `CentOs 7.1` - is a value of custom fact `full_os_name`
 * `coffee.html` and `beer.html` should be generic links - pointing to files with a content:
 
+
 ```
   <html><body>Here is your Coffee</body></html>
 ```
+
+same for the Beer.
+
+---
 
 use this code to create separate files:
 ```
@@ -84,9 +90,11 @@ use this code to create separate files:
    }
 ```
 
-same for the Beer.
+---
 
-5. final hiera code should be
+## hiera
+
+the final hiera code should be:
 
 ```
 myhttp::port: 8080
@@ -96,13 +104,20 @@ myhttp::drinks:
   - beer
 ```
 
-6. After everything is applied, see your page by:
+---
+
+## Test
+
+load your page by:
 
  ```bash
    lynx http://localhost:8080
  ```
 
-7. and a final task:
+---
+
+##  And a final task:
+
 * Change the port in hiera to 8081
 * add to the list of drinks: `juice`.
 * Make a puppet run on the node and reload the page.
