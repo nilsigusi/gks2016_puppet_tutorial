@@ -147,7 +147,7 @@ facter -p
 
 ---
 
-# Execrisce
+# Exercise
 
 ```ruby
 class sysadmin{
@@ -156,3 +156,5 @@ class sysadmin{
   notify{"My role is: $::role":}
 }
 ```
+
+play around with a role.
