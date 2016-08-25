@@ -79,19 +79,6 @@ same for the Beer.
 
 ---
 
-use this code to create separate files:
-```ruby
-   drinks_files{$drinks:}
-
-   define drinks_files(){
-       file { "/var/www/html/${name}.html":
-          content => "<html><body>Here is your ${name}</body></html>",
-       }
-   }
-```
-
----
-
 ## hiera
 
 the final hiera code should be:
