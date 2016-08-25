@@ -1,7 +1,7 @@
 class myhttp(
   $port = 8081,
-  $special_name = "Hero",
-  $drinks = [],
+  $special_name = hiera('myhttp::special_name', 'noname'),
+  $drinks = hiera('myhttp::drinks'),
 )
 {
 
@@ -23,6 +23,14 @@ class myhttp(
    file { '/var/www/html/index.html':
        content => template('myhttp/index.html.erb'),
        mode    => '0644',
+   }
+
+   drinks_files{$drinks:}
+
+   define drinks_files(){
+       file { "/var/www/html/${name}.html":
+          content => "<html><body>Here is your ${name}</body></html>",
+       }
    }
 
 }

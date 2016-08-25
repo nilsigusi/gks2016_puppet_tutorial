@@ -1,4 +1,3 @@
-face
 # GKS 2016 - Puppet
 
 ## Facter
@@ -9,10 +8,11 @@ face
 
 [Tutorial: Hiera](./hiera/README.md)
 
+---
 
 ## Task
 
-create a puppet module, which should do:
+Create a puppet module, which should do:
 
  * install and start http server on the node. Package name `httpd`
  * install `lynx` - a text browser for linux.
@@ -32,7 +32,7 @@ Listen 1234
 </Directory>
 
 ```
-_PORT_ - is a port number to be changed, this should come from `hiera`. Note - httpd needs to be restarted, if configuration changes!
+`1234` - is a port number to be changed, this should come from `hiera`. Note - httpd needs to be restarted, if configuration changes!
 
 
  * create the `index.html` in `DocumentRoot` of the server as a landing page.
@@ -43,7 +43,7 @@ _PORT_ - is a port number to be changed, this should come from `hiera`. Note - h
 <body>
 
 <p>
-Hello, My special name is: <b>HtmlHero.</b>
+Hello, My special name is: <b>ComupterHero.</b>
 </p>
 
 <p>
@@ -73,14 +73,22 @@ Where:
   <html><body>Here is your Coffee</body></html>
 ```
 
+use this code to create separate files:
+```
+   drinks_files{$drinks:}
+
+   define drinks_files(){
+       file { "/var/www/html/${name}.html":
+          content => "<html><body>Here is your ${name}</body></html>",
+       }
+   }
+```
+
 same for the Beer.
 
 5. final hiera code should be
 
 ```
- classes:
-  - myhttp
-
 myhttp::port: 8080
 myhttp::special_name: 'Computer Hero'
 myhttp::drinks:
