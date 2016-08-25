@@ -20,6 +20,7 @@ swapsize => 1024.00 MB
 ...
 
 ```
+
 ---
 
 ![Puppet Facter](./puppet_facter.jpg)
@@ -32,6 +33,7 @@ swapsize => 1024.00 MB
  6. Execute catalog
  7. Init reporting system
  8. Report
+
 ---
 
 ## Using facts
@@ -82,6 +84,7 @@ Facter.add('hardware_platform') do # same as filename
   end
 end
 ```
+
 ---
 
 ## Custom facts in modules
