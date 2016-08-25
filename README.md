@@ -18,7 +18,7 @@ Create a puppet module, which should do:
  * install `lynx` - a text browser for linux.
  * `/etc/httpd/conf.d/welcome.conf` should have this content. Configure this via puppet `File` resource from template.
 
-```
+```xml
 Listen 1234
 
 <VirtualHost *:1234>
@@ -71,7 +71,7 @@ In the morning I am drinking:
 * `coffee.html` and `beer.html` should be generic links - pointing to files with a content:
 
 
-```
+```html
   <html><body>Here is your Coffee</body></html>
 ```
 
@@ -80,7 +80,7 @@ same for the Beer.
 ---
 
 use this code to create separate files:
-```
+```ruby
    drinks_files{$drinks:}
 
    define drinks_files(){
@@ -96,7 +96,7 @@ use this code to create separate files:
 
 the final hiera code should be:
 
-```
+```yaml
 myhttp::port: 8080
 myhttp::special_name: 'Computer Hero'
 myhttp::drinks:
