@@ -8,6 +8,11 @@
 
 [Tutorial: Hiera](./hiera/README.md)
 
+## Defines
+
+[Tutorial: Defined resources](./defines/README.md)
+
+
 ---
 
 ## Task
