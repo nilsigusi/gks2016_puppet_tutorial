@@ -4,7 +4,7 @@ Defined resource types (also called defined types or defines) are blocks of Pupp
 
 Defines can be used as simple macros or as a lightweight way to develop fairly sophisticated resource types.
 
-```
+```ruby
 define hello_define ($content_variable) {
   file {"$title":
     ensure  => file,
@@ -15,9 +15,9 @@ define hello_define ($content_variable) {
 
 ---
 
-## A usage example
+## Usage example
 
-```
+```ruby
 class hello_define {
     define hello_define ($content_variable) {
       file {"$title":
@@ -36,4 +36,29 @@ class hello_define {
 }
 ```
 
+---
+
+# Practical Usage
+
+avoid conflicts, usage by multiple classes
+
+```ruby
+define create_mydir{
+  exec { "create_or_check_for_dir_${name}":
+     command => "/bin/mkdir -p /tmp/mydir",
+     unless  => "/bin/ls /tmp/mydir"
+  }
+}
+```
+
+```ruby
+class A{
+  create_mydir{"from_class_a":}
+}
+
+
+class B{
+  create_mydir{"from_class_b":}
+}
+```
 ---
