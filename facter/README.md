@@ -158,3 +158,11 @@ class sysadmin{
 ```
 
 play around with a role.
+let puppet create a file with this content alike
+
+```
+FQDN: gridkaschool01.desy.de
+IP: 1.2.3.4
+ROLE: admin
+ABOUT: CentOS 7 7.2.1511
+```
