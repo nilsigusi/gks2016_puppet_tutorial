@@ -158,7 +158,7 @@ class sysadmin{
 ```
 
 play around with a role.
-let puppet create a file with this content alike
+let puppet create a file `/tmp/myconfig` with content like
 
 ```
 FQDN: gridkaschool01.desy.de
