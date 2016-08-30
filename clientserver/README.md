@@ -27,14 +27,14 @@ modules/
 
 place for manifests
 
->note in general - all .pp files are manifests. Do not mix this manifests with manifests inside modules!!!!
+>in general - all .pp files are manifests. Do not mix this manifests with manifests inside modules!!!!
 
-```
+```bash
 manifests/
   site.pp
 ```
 
-```
+```ruby
 # site.pp
 node 'node_1.host.de'{
   include sysadmin
