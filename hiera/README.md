@@ -1,19 +1,66 @@
 # Hiera
 
+## Old style
+
+```ruby
+# module "nginx", init.pp
+class nginx(
+  $port = "80"
+){  # doing something, using $port
+}
+
+# module "ssh", init.pp
+class ssh(
+  $listenAddress = "0.0.0.0"
+){  # doing something, using $port
+}
+
+# site.pp
+node 'node_1.host.de'{
+  class {"nginx":
+    port => "81"
+  }
+}
+
+node 'node_1.host.de'{
+  class {"sshd":
+    listenAddress = "127.0.0.1"
+  }
+
+  class {"nginx":
+    port => "81"
+  }
+}
+```
+
 Hiera separates data from modules... It is an external place to specify data.
 
 ```ruby
-# nginx class
-
 class nginx{
   $port = hiera("nginx::port", '80')
+}
+
+class ssh{
+  $listenAddress = hiera("ssh::listenAddress", '0.0.0.0')
+}
+
+node 'node_1.host.de'{
+  include nginx
+}
+
+node 'node_1.host.de'{
+  include sshd
+  include nginx
 }
 ```
 
 ```yaml
-# hiera data
-
+# node-1.host.de.yaml
 nginx::port: 81
+
+# node-1.host.de.yaml
+nginx::port: 81
+ssh::listenAddress: 127.0.0.1
 ```
 
 ---
