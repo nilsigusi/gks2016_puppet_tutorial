@@ -1,5 +1,10 @@
 # GKS 2016 - Puppet
 
+## Client - Server
+
+[Tutorial: Client - Server tutorial](./clientserver/README.md)
+
+
 ## Facter
 
 [Tutorial: Facter/Facts](./facter/README.md)
