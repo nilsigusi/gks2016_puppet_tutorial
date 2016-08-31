@@ -14,10 +14,9 @@ class nginx(
 # module "ssh", init.pp
 class ssh(
   $listenAddress = "0.0.0.0"
-){  # doing something, using $port
+){  # doing something, using $listenAddress
 }
 ```
-
 
 ---
 
@@ -43,6 +42,8 @@ node 'node_1.host.de'{
   }
 }
 ```
+
+---
 
 ## HIERA!!! :)
 
