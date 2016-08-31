@@ -64,3 +64,19 @@ node 'gridkaschool01.desy.de'{
   include sysadmin
 }
 ```
+
+---
+
+```
+~/puppet/
+  manifests/
+    site.pp
+       
+  modules/
+    sysadmin/
+      manifests/
+         init.pp
+         # class sysadmin{}
+         
+  .git
+```
