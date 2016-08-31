@@ -71,6 +71,7 @@ node 'gridkaschool01.desy.de'{
 ~/puppet/
   manifests/
     site.pp
+    # node default { include sysadmin}
        
   modules/
     sysadmin/
