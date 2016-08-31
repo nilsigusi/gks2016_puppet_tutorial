@@ -2,6 +2,8 @@
 
 ## Old style
 
+here how we used to write modules
+
 ```ruby
 # module "nginx", init.pp
 class nginx(
@@ -14,7 +16,16 @@ class ssh(
   $listenAddress = "0.0.0.0"
 ){  # doing something, using $port
 }
+```
 
+
+---
+
+## Old style 2
+
+and assign classes to nodes
+
+```ruby
 # site.pp
 node 'node_1.host.de'{
   class {"nginx":
@@ -33,7 +44,9 @@ node 'node_1.host.de'{
 }
 ```
 
-Hiera separates data from modules... It is an external place to specify data.
+## HIERA!!! :)
+
+Hiera separates data from modules...  and put them as `yaml` files
 
 ```ruby
 class nginx{
@@ -65,7 +78,35 @@ ssh::listenAddress: 127.0.0.1
 
 ---
 
+## Even simpler
+
+yes.. we can include classes right away in hiera yaml_s
+
+```ruby
+# site.pp
+include(hiera_array("classes", []))
+
+```
+
+```yaml
+# node-1.host.de.yaml
+classes:
+  - nginx
+nginx::port: 81
+
+# node-1.host.de.yaml
+classes:
+  - nginx
+  - ssh
+nginx::port: 81
+ssh::listenAddress: 127.0.0.1
+```
+
+---
+
 ## Config Puppet Server
+
+config puppet to use hiera
 
 ```
 # puppet config
@@ -99,6 +140,13 @@ Before building the catalog, puppet would do:
  3. apply hiera data to manifest (set variable)
  4. build catalog
 
+```
+fact:              fqdn => "node-1.scc.kit.edu"
+
+hiera looking for: fqdn/node-1.scc.kit.edu.yaml
+(this is defined in hiera.yaml )
+```
+
 ---
 
 ## Exercise
@@ -115,7 +163,6 @@ class sysadmin{
 ```
 
 ```bash
-# mkdir hieradata
 # hieradata/common.yaml
 sysadmin::permissions: 'read'
 
