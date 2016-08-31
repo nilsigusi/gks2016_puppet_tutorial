@@ -76,9 +76,6 @@ nginx::port: 81
 nginx::port: 81
 ssh::listenAddress: 127.0.0.1
 ```
-
----
-
 ## Even simpler
 
 yes.. we can include classes right away in hiera yaml_s
@@ -146,6 +143,23 @@ fact:              fqdn => "node-1.scc.kit.edu"
 
 hiera looking for: fqdn/node-1.scc.kit.edu.yaml
 (this is defined in hiera.yaml )
+```
+
+---
+```
+class sysadmin{
+  $msg = hiera("sysadmin::msg", "no_message")
+  notify{"$msg":}
+}
+```
+
+```
+#~/puppet
+mkdir hieradata
+cd hieradata
+vi common.yaml
+
+sysadmin::msg: helo
 ```
 
 ---
